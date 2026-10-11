@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <mmeapi.h>
 
+// master volume only
 static inline void Audio_Set_Volume(float volume) {
     if (volume < 0.0f) volume = 0.0f;
     if (volume > 1.0f) volume = 1.0f;
@@ -16,13 +17,14 @@ static inline void Audio_Set_Volume(float volume) {
     waveOutSetVolume(NULL, combined_vol);
 }
 
-static inline void Audio_Play(const char* path, float volume, bool loop) {
+// plays wav only
+static inline void Audio_Play(const char* path, bool loop) {
     if (!path) return;
-    Audio_Set_Volume(volume);
     if (loop) PlaySoundA(path, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP | SND_NODEFAULT);
     else PlaySoundA(path, NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 }
 
+// stops audio globally
 static inline void Audio_Stop(void) {
     PlaySoundA(NULL, NULL, 0);
 }

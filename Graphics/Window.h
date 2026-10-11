@@ -512,27 +512,22 @@ static inline void Window_Draw_Rect(Window* win, Rect rect, uint color) {
     if (right <= 0.0 || bottom <= 0.0 ||
         left >= (double)win->size.x || top >= (double)win->size.y) return;
 
-    const double inverse_scale_x = 1.0 / size_x;
-    const double inverse_scale_y = 1.0 / size_y;
-
     for (int screen_y = start_y; screen_y < end_y; screen_y++) {
         for (int screen_x = start_x; screen_x < end_x; screen_x++) {
             const double relative_x = (double)screen_x + 0.5 - center_x;
             const double relative_y = (double)screen_y + 0.5 - center_y;
             const double source_scaled_x = relative_x * cos_angle + relative_y * sin_angle;
             const double source_scaled_y = -relative_x * sin_angle + relative_y * cos_angle;
-            const double source_x = source_scaled_x * inverse_scale_x + pivot_x;
-            const double source_y = source_scaled_y * inverse_scale_y + pivot_y;
+            const double source_x = source_scaled_x + pivot_x;
+            const double source_y = source_scaled_y + pivot_y;
+
+            vec2 result = (vec2){screen_x, screen_y};
+            result = vec2_sub(result, rect.offset);
 
             if (source_x < 0.0 || source_x >= (double)rect.size.x ||
                 source_y < 0.0 || source_y >= (double)rect.size.y) continue;
 
-            const int image_x = (int)floor(source_x);
-            const int image_y = (int)floor(source_y);
-
-            const uint image_index = (uint)image_y * rect.size.x + (uint)image_x;
-            
-            Window_Draw_Pixel(win, (vec2){screen_x, screen_y}, color);
+            Window_Draw_Pixel(win, result, color);
         }
     }
 }

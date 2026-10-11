@@ -8,7 +8,7 @@ _(This is a high level module, requiring `windows.h`, `math.h`, `stdbool.h`, and
 |Yes    |No |No   |
 
 ## About
-It's a window module just like SDL3, but unlike it, it has hooks
+It's a window maker like SDL3, but it has hooks
 
 ## API
 ### defines
